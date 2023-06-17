@@ -1,0 +1,19 @@
+services:
+  weatherservice:
+    image: smehrens/fargate-dotnet:1.0.0
+    env_file:
+      - .weatherservice.env
+  ddagent:
+    image: datadog/agent:7
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+    env_file:
+      - .ddagent.env
+  busybox:
+    image: busybox
+    entrypoint:
+      - "sh"
+      - "-c"
+      - "while true; do wget -qO - http://weatherservice/weatherforecast; sleep 5; done"
