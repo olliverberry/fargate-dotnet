@@ -1,6 +1,8 @@
 services:
   weatherservice:
     image: smehrens/fargate-dotnet:1.0.0
+    ports:
+      - "80:80"
     env_file:
       - .weatherservice.env
   ddagent:
