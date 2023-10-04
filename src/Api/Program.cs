@@ -1,3 +1,4 @@
+using Api.Services;
 using Microsoft.AspNetCore.HttpLogging;
 
 namespace Api;
@@ -7,8 +8,7 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-
-        // Add services to the container.
+        builder.Services.AddSingleton<WeatherService>();
         builder.Services.AddControllers();
         builder.Services.AddHttpLogging(options =>
         {
@@ -27,8 +27,8 @@ public class Program
                 jsonOptions.UseUtcTimestamp = true;
             });
         });
-        var app = builder.Build();
 
+        var app = builder.Build();
         app.UseHttpLogging();
         app.MapControllers();
         app.Run();
